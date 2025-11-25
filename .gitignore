@@ -32,5 +32,8 @@ build/
 ### VS Code ###
 .vscode/
 
+<<<<<<< HEAD
 ### ローカル設定 ###
+=======
+### local settings ###
 src/main/resources/application-local.properties
