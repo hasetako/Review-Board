@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<title>カテゴリ一覧</title>
+	<!-- 各ページで直接 Bootstrap を読み込む -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+	<style>
+		/* 既存スタイルは必要最低限のみ残します（Bootstrapで代替） */
+		a.btn {
+			text-decoration: none;
+		}
+
+		/* 既存と同等の見た目維持用 */
+		.category-container {
+			display: flex;
+			justify-content: center;
+			gap: 40px;
+			/* flex-wrap: wrap; */
+			/* 3ブロックを1行に固定するため wrap → */
+			flex-wrap: nowrap;
+			/* 改行させない（要件に合わせて外側は横スクロール） */
+			overflow-x: auto;
+			/* 画面幅が足りない場合は横スクロール */
+			-webkit-overflow-scrolling: touch;
+			/* iOSの慣性スクロール */
+		}
+
+		/* 各カテゴリカード */
+		.category-column {
+			background-color: #fff;
+			border: 1px solid #ddd;
+			border-radius: 10px;
+			padding: 20px;
+			width: 260px;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			transition: transform 0.2s ease;
+			flex: 0 0 260px;
+			/* 幅を固定し、縮小・折返しを防止 */
+		}
+
+		.category-column:hover {
+			transform: translateY(-5px);
+		}
+
+		.category-column h2 {
+			font-size: 18px;
+			margin-bottom: 15px;
+			color: #2563eb;
+			border-bottom: 1px solid #ccc;
+			padding-bottom: 5px;
+		}
+
+		.category-column ul {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+		}
+
+		.category-column li {
+			margin-bottom: 10px;
+		}
+
+		.category-column a {
+			text-decoration: none;
+			color: #333;
+			font-weight: 500;
+			transition: color 0.2s ease;
+		}
+
+		.category-column a:hover {
+			color: #2563eb;
+			text-decoration: underline;
+		}
+
+		/* 「開発ツール」ブロック内リストをレスポンシブなグリッド表示にする  */
+		/* スマホ: 1列 / タブレット(md≥768px): 2列 / PC(lg≥992px): 3列 */
+		.list-grid {
+			display: grid;
+			grid-template-columns: repeat(1, 1fr);
+			gap: 8px;
+		}
+
+		@media (min-width: 768px) {
+
+			/* ★追加: md */
+			.list-grid {
+				grid-template-columns: repeat(2, 1fr);
+			}
+		}
+
+		@media (min-width: 992px) {
+
+			/* ★追加: lg */
+			.list-grid {
+				grid-template-columns: repeat(3, 1fr);
+			}
+		}
+
+		.list-grid .list-group-item {
+			/* グリッド子要素の幅を100%に */
+			width: 100%;
+			margin-bottom: 0;
+			/* 既存 .category-column li {margin-bottom:10px;} の影響を打ち消し */
+		}
+	</style>
+</head>
+
+<body>
+	<!-- 共通ヘッダーを適用 -->
+	<div th:replace="fragments/header :: siteHeader('カテゴリ一覧')"></div>
+
+
+
+	<div class="container text-center">
+		<h1 class="text-center">カテゴリ一覧</h1>
+		<div class="row">
+			<div class="col">
+				<div class="category-column">
+					<h2>言語 / 技術</h2>
+					<ul class="list-group">
+						<li class="list-group-item d-flex justify-content-between align-items-center"
+							th:each="c : ${categories}">
+							<a class="text-decoration-none" th:href="@{|/categories/${c.categoryId}|}"
+								th:text="${c.categoryName}">カテゴリ名</a>
+							<i class="bi bi-chevron-right"></i>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="col">
+				<div class="category-column">
+					<h2>開発ツール</h2>
+					<ul class="list-group">
+						<li class="list-group-item d-flex justify-content-between align-items-center"
+							th:each="c : ${categories}">
+							<a class="text-decoration-none" th:href="@{|/categories/${c.categoryId}|}"
+								th:text="${c.categoryName}">カテゴリ名</a>
+							<i class="bi bi-chevron-right"></i>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="col">
+				<div class="category-column">
+					<h2>基本概念</h2>
+					<ul class="list-group">
+						<li class="list-group-item d-flex justify-content-between align-items-center"
+							th:each="c : ${categories}">
+							<a class="text-decoration-none" th:href="@{|/categories/${c.categoryId}|}"
+								th:text="${c.categoryName}">カテゴリ名</a>
+							<i class="bi bi-chevron-right"></i>
+						</li>
+					</ul>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+
+	<div class="container my-4">
+		<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+
+		<!-- Bootstrap JS（任意・Navbar等で使用） -->
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+			crossorigin="anonymous"></script>
+	</div><!-- /container -->
+</body>
+
+</html>

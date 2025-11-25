@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${review.reviewTitle} + '｜レビュー編集'">レビュー編集</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        .thumb {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid #eee;
+        }
+
+        textarea {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+<div th:replace="fragments/header :: siteHeader('レビュー編集')"></div>
+
+<div class="container my-4">
+    <h1 class="h4 mb-3">レビュー編集</h1>
+
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+    <div class="card shadow-sm mb-3">
+        <div class="card-body d-flex gap-3 align-items-start">
+            <img class="thumb" th:if="${review.contents.thumbnail}" th:src="${review.contents.thumbnail}"
+                 alt="thumbnail">
+            <div>
+                <div class="fw-bold" th:text="${review.contents.contentsTitle}">対象コンテンツ</div>
+                <div>
+                    <a th:href="${review.contents.contentsUrl}" th:text="${review.contents.contentsUrl}"
+                       target="_blank" rel="noopener">URL</a>
+                </div>
+                <div class="text-muted small mt-2">※URLは編集できません。</div>
+            </div>
+        </div>
+    </div>
+
+    <form th:action="@{|/reviews/${review.reviewId}/edit|}" method="post" class="card shadow-sm">
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label">評価</label>
+                <select name="rate" class="form-select" required>
+                    <option th:each="i : ${#numbers.sequence(1,5)}"
+                            th:value="${i}" th:text="${i}"
+                            th:selected="${i == review.rate}">
+                    </option>
+                </select>
+            </div>
+
+            <!-- ★カテゴリ：チェックボックス -->
+            <div class="mb-3">
+                <label class="form-label">カテゴリ（複数選択可）</label>
+                <div class="d-flex flex-wrap gap-2">
+                    <div class="form-check" th:each="c : ${categories}">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="categoryIds"
+                               th:value="${c.categoryId}"
+                               th:id="${'edit_cat_' + c.categoryId}"
+                               th:checked="${review.categories != null and review.categories.contains(c)}">
+                        <label class="form-check-label"
+                               th:for="${'edit_cat_' + c.categoryId}"
+                               th:text="${c.categoryName}"></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">レビュータイトル</label>
+                <input type="text" name="reviewTitle" th:value="${review.reviewTitle}"
+                       class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">レビュー</label>
+                <textarea name="reviewText" rows="8" class="form-control"
+                          th:text="${review.reviewText}" required></textarea>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">更新する</button>
+                <a th:href="@{|/reviews/${review.reviewId}|}" class="btn btn-outline-secondary">キャンセル</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

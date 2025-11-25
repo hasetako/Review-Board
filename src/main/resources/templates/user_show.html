@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<title th:text="${'ユーザー: ' + target.username}">ユーザー詳細</title>
+	<!-- 各ページで直接 Bootstrap を読み込む -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+	<style>
+		.thumb {
+			width: 96px;
+			height: 96px;
+			object-fit: cover;
+			border-radius: 6px;
+			border: 1px solid #eee;
+		}
+
+		/* 既存維持 */
+		a.title {
+			font-weight: bold;
+			text-decoration: none;
+		}
+
+		/* 既存維持 */
+		.meta {
+			color: #666;
+			font-size: 14px;
+		}
+
+		/* 既存維持 */
+		.nav-tabs .nav-link {
+			color: grey;
+		}
+	</style>
+</head>
+
+<body>
+	<!-- 共通ヘッダー -->
+	<div th:replace="fragments/header :: siteHeader(${ 'ユーザー: ' + target.username })"></div>
+	<div class="container my-4">
+		<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+		<!--プロフィール欄-->
+		<div class="d-flex justify-content-center mb-4">
+			<div class="card text-bg-secondary  w-75">
+				<div class="row g-0">
+<!--					プロフィール画像-->
+<!--					<div class="col-md-3">-->
+<!--						<img src="..." class="img-fluid rounded-start" alt="プロフィール画像">-->
+<!--					</div>-->
+					<div class="col-md-9">
+						<div class="card-body">
+							<h2 class="h5 mb-3">プロフィール</h2>
+							<h5 class="card-title">ユーザー名：<span th:text="${target.username}"></span></h5>
+<!--							<p class="card-text">他ユーザーのコメント</p>-->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div><!--プロフィール欄おわり-->
+		<div class="container my-4">
+			<div class="row">
+				<!--サイドバー-->
+				<aside class="list-group col-md-3 col-12">
+					<li class="list-group-item text-bg-primary p-3">目次</li>
+					<a href="#" class="list-group-item list-group-item-action">投稿したレビュー</a>
+<!--					<a href="#" class="list-group-item list-group-item-action">コメントしたレビュー</a>-->
+				</aside>
+				<!--メイン-->
+				<div class="col-md-9 col-12">
+					<h2 class="h5">このユーザーのレビュー</h2>
+					<div th:if="${#lists.isEmpty(reviews)}" class="alert alert-info">まだレビューがありません。</div>
+					<!-- ナビゲーションタブ -->
+					<ul class="nav nav-tabs mb-3" id="reviewTabs" role="tablist">
+						<li class="nav-item" role="presentation">
+							<button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all"
+								type="button" role="tab" aria-controls="all" aria-selected="true">
+								投稿したレビュー
+							</button>
+						</li>
+<!--						<li class="nav-item" role="presentation">-->
+<!--							<button class="nav-link" id="positive-tab" data-bs-toggle="tab" data-bs-target="#positive"-->
+<!--								type="button" role="tab" aria-controls="positive" aria-selected="false">-->
+<!--								コメントしたレビュー-->
+<!--							</button>-->
+<!--						</li>-->
+					</ul>
+					<!-- タブの中身 -->
+					<div class="tab-content" id="reviewTabsContent">
+						<div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
+							<!-- カードレイアウト（Bootstrap） -->
+							<div class="row" th:each="r : ${reviews}">
+								<div class="col-12">
+									<!-- レビュー間余白 -->
+									<div class="card shadow-sm mb-3">
+										<div class="card-body d-flex gap-3 align-items-start">
+											<img class="thumb" th:if="${r.contents.thumbnail}"
+												th:src="${r.contents.thumbnail}" alt="thumb">
+											<div class="flex-grow-1">
+												<h5 class="card-title mb-1">
+													<a class="title" th:href="@{|/reviews/${r.reviewId}|}"
+														th:text="${r.reviewTitle}">レビュータイトル</a>
+												</h5>
+												<div class="mb-2 text-muted small meta">
+													<span th:text="'評価: ' + ${r.rate} + ' / 5'"></span>
+													<span th:if="${r.category}">
+														｜カテゴリ:
+														<a th:href="@{|/categories/${r.category.categoryId}|}"
+															th:text="${r.category.categoryName}">カテゴリ</a>
+													</span>
+
+												</div>
+												<div>
+													<a th:text="${r.contents.contentsTitle}">記事タイトル</a>
+												</div>
+											</div>
+										</div>
+									</div><!-- /card -->
+								</div><!-- /col -->
+
+								<div class="tab-pane fade" id="positive" role="tabpanel" aria-labelledby="positive-tab">
+									<!-- ここにコメントしたレビュー一覧を表示 -->
+									<div th:if="${#lists.isEmpty(reviews)}" class="alert alert-info">
+										あなたのコメントしたレビューはまだありません。</div>
+								</div>
+							</div>
+						</div><!-- レビュー一覧/row -->
+					</div><!--col-md-9-->
+				</div><!--コンテンツ全体のrow-->
+
+				<!-- Bootstrap JS -->
+				<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+					integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+					crossorigin="anonymous"></script>
+</body>
+
+</html>

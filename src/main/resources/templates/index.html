@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>レビュー一覧</title>
+    <!-- 各ページで直接 Bootstrap を読み込む -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        /* 既存クラスは必要箇所のみ保持 */
+        .thumb {
+            width: 96px;
+            height: 96px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid #eee;
+        }
+
+        a.title {
+            font-weight: bold;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- 共通ヘッダー -->
+<div class="mb-3" th:replace="fragments/header :: siteHeader('レビュー一覧')"></div>
+
+<div class="container my-4">
+    <center class="mb-4"><img src="images/header.jpg" width="350"></center>
+
+    <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+    <div th:if="${#lists.isEmpty(reviews)}" class="alert alert-info">まだレビューがありません。</div>
+
+    <!-- カードリスト（Bootstrap） -->
+    <div class="row gy-4">
+        <!-- スマホなどは１列 PC では２列 -->
+        <div class="col-12 col-md-6" th:each="r : ${reviews}">
+
+            <div class="card shadow-sm mb-3">
+                <div class="card-body d-flex gap-3 align-items-start">
+                    <img class="thumb" th:if="${r.contents.thumbnail}" th:src="${r.contents.thumbnail}" alt="thumb">
+                    <div class="flex-grow-1">
+                        <h5 class="card-title mb-1">
+                            <a class="title" th:href="@{|/reviews/${r.reviewId}|}"
+                               th:text="${r.reviewTitle}">レビュータイトル</a>
+                        </h5>
+
+                        <div class="mb-2 text-muted small">
+                            <span th:text="'評価: ' + ${r.rate} + ' / 5'"></span>
+
+                            <!-- 複数カテゴリ対応 -->
+                            <span th:if="${#lists.isEmpty(r.categories) == false}">
+                                ｜カテゴリ:
+                                <span th:each="c, iter : ${r.categories}">
+                                    <a th:href="@{|/categories/${c.categoryId}|}"
+                                       th:text="${c.categoryName}">カテゴリ</a>
+                                    <span th:if="${!iter.last}">, </span>
+                                </span>
+                            </span>
+
+                            <!-- 投稿者 -->
+                            <span th:if="${r.user}">
+                                ｜投稿者:
+                                <a th:href="@{|/user/${r.user.id}|}"
+                                   th:text="${r.user.username}">username</a>
+                            </span>
+                        </div>
+
+                        <div>
+                            <a th:text="${r.contents.contentsTitle}">記事タイトル</a>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /card -->
+
+        </div><!-- /col -->
+    </div><!-- /row -->
+</div><!-- /container -->
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>
