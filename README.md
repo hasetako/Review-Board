@@ -1,7 +1,9 @@
 # Review Board
 
+職業訓練校でのグループワークで制作しました。
 外部コンテンツ（Web記事 / 動画 / 書籍）に対してレビューを投稿・閲覧できる Web アプリケーションです。  
 Jsoup を使った URL メタ情報取得と、楽天 Books API を使った書籍検索機能を備えています。
+私は主にテーブル設計、Jsoup/楽天BooksAPIを用いてレビュー情報とコンテンツのメタ情報を紐づける部分の実装を担当しました。
 
 ---
 
@@ -64,6 +66,8 @@ Jsoup を使った URL メタ情報取得と、楽天 Books API を使った書�
   - Bootstrap 5.3.3
 - ビルドツール
   - Maven
+- 外部API
+    - 楽天BooksAPI
 
 
 
@@ -138,3 +142,14 @@ erDiagram
 spring.datasource.url=jdbc:mariadb://localhost:3306/reviewboard_test?useSSL=false&serverTimezone=Asia/Tokyo
 spring.datasource.username=root
 spring.datasource.password=${DB_PASSWORD:}
+```
+
+## 5. 今後の改善点
+* Spring Security 導入による認証・認可の整理
+* レビューへのコメント機能
+* ページネーション
+* 検索機能の強化(ユーザー名、コンテンツ名等)
+* リファクタリング
+    * バリデーションコードの重複
+    * Contents重複チェックのセクションのservice化
+    * フロントエンドの共通レイアウトの整理
