@@ -85,6 +85,10 @@ Jsoup を使った URL メタ情報取得と、楽天 Books API を使った書�
 #### ER図
 
 ```mermaid
+---
+config:
+  theme: neutral
+---
 erDiagram
     CATEGORY {
         int          category_id     PK
