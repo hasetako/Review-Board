@@ -16,7 +16,6 @@ Jsoup を使った URL メタ情報取得と、楽天 Books API を使った書�
 - シンプルな UI（Thymeleaf + Bootstrap）
 
 
-
 ---
 
 ## 2. 主要機能
@@ -55,13 +54,17 @@ Jsoup を使った URL メタ情報取得と、楽天 Books API を使った書�
 ![トップページ画面](docs/images/top.png)
 
 #### レビュー投稿画面(本/本以外のコンテンツ)
+##### 本(楽天BooksAPI)
 ![レビュー投稿画面(本)](docs/images/review_compose_book.png)
+
+##### 本以外のコンテンツ(Jsoup)
 ![レビュー投稿画面(本以外のコンテンツ)](docs/images/review_compose_other.png)
 #### レビュー詳細画面
 ![レビュー詳細画面](docs/images/review_detail.png)
 #### マイページ画面
 ![マイページ画面](docs/images/mypage.png)
 
+- ※実際の動作デモをご希望の場合は、ローカル環境＋トンネル（ngrok）で共有可能です
 ---
 
 ## 3. 技術スタック
@@ -158,16 +161,16 @@ spring.datasource.password=${DB_PASSWORD:}
 ```
 
 ## 5. 今後の改善点
-* Spring Security 導入による認証・認可の整理
-* レビューへのコメント機能
-* ページネーション
-* 検索機能の強化(ユーザー名、コンテンツ名等)
-* リファクタリング
-    * バリデーションコードの重複
-    * Contents重複チェックのセクションのservice化
-    * フロントエンドの共通レイアウトの整理
+- Spring Security 導入による認証・認可の整理
+- レビューへのコメント機能
+- ページネーション
+- 検索機能の強化(ユーザー名、コンテンツ名等)
+- リファクタリング
+    - バリデーションコードの重複
+    - Contents重複チェックのセクションのservice化
+    - フロントエンドの共通レイアウトの整理
 
 ## 6. クレジット
-* [Supported by Rakuten Developers](https://developers.rakuten.com/)
+- [Supported by Rakuten Developers](https://developers.rakuten.com/)
 
 
