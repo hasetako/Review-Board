@@ -49,6 +49,19 @@ Jsoup を使った URL メタ情報取得と、楽天 Books API を使った書�
 - マイページで自分の投稿したレビューを一覧表示
 - レビューの編集 / 論理削除（`active_flag`）対応
 
+### 2-5. 画面イメージ
+
+#### トップページ(レビュー一覧)
+![トップページ画面](docs/images/top.png)
+
+#### レビュー投稿画面(本/本以外のコンテンツ)
+![レビュー投稿画面(本)](docs/images/review_compose_book.png)
+![レビュー投稿画面(本以外のコンテンツ)](docs/images/review_compose_other.png)
+#### レビュー詳細画面
+![レビュー詳細画面](docs/images/review_detail.png)
+#### マイページ画面
+![マイページ画面](docs/images/mypage.png)
+
 ---
 
 ## 3. 技術スタック
@@ -153,3 +166,8 @@ spring.datasource.password=${DB_PASSWORD:}
     * バリデーションコードの重複
     * Contents重複チェックのセクションのservice化
     * フロントエンドの共通レイアウトの整理
+
+## 6. クレジット
+* [Supported by Rakuten Developers](https://developers.rakuten.com/)
+
+
